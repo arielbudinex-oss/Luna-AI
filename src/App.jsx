@@ -108,10 +108,23 @@ const CAPABILITIES = [
   ['HP sebagai remot', 'pasangkan lewat token, lihat layar PC, kirim perintah'],
 ];
 
+const PROVIDERS = [
+  ['Groq', 'bawaan · ada paket gratis', true],
+  ['OpenAI', 'GPT lewat kunci API sendiri'],
+  ['OpenRouter', 'satu kunci untuk banyak model'],
+  ['DeepSeek', 'murah untuk obrolan panjang'],
+  ['Together, Mistral, dll', 'selama formatnya kompatibel OpenAI'],
+  ['Server lokal', 'LM Studio atau llama.cpp di jaringanmu'],
+];
+
 const FAQS = [
   {
     q: 'Apakah Luna butuh internet?',
-    a: 'Untuk menyusun jawaban, ya. Teks perintah dikirim ke Groq. Audio diproses lokal dengan Whisper, suara Luna dibuat lokal dengan F5, dan kendali PC tetap berjalan di mesinmu.',
+    a: 'Untuk menyusun jawaban, ya. Teks perintah dikirim ke penyedia AI yang kamu pilih, bawaannya Groq. Audio diproses lokal dengan Whisper, suara Luna dibuat lokal dengan F5, dan kendali PC tetap berjalan di mesinmu.',
+  },
+  {
+    q: 'Harus pakai Groq?',
+    a: 'Tidak. Groq jadi bawaan karena ada paket gratisnya. Luna bisa memakai API apa pun yang kompatibel dengan format OpenAI, misalnya OpenAI, OpenRouter, DeepSeek, Together, atau server lokal seperti LM Studio. Cukup isi alamat API, nama model, dan kuncinya di Pengaturan.',
   },
   {
     q: 'Apakah mikrofon selalu menyala?',
@@ -119,7 +132,7 @@ const FAQS = [
   },
   {
     q: 'Di mana data saya disimpan?',
-    a: 'Ingatan, jurnal, dan pengaturan tersimpan sebagai file di PC. Kunci API juga tinggal di mesinmu dan hanya dipakai untuk menghubungi Groq.',
+    a: 'Ingatan, jurnal, dan pengaturan tersimpan sebagai file di PC. Kunci API juga tinggal di mesinmu dan hanya dipakai untuk menghubungi penyedia AI pilihanmu.',
   },
   {
     q: 'Bisakah HP dipakai tanpa PC?',
@@ -139,10 +152,9 @@ const FAQS = [
   },
 ];
 
-function Nav({ theme, onTheme }) {
+function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const dark = theme === 'dark';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 18);
@@ -173,16 +185,6 @@ function Nav({ theme, onTheme }) {
           </a>
         ))}
       </nav>
-      <button
-        type="button"
-        className="nav-theme"
-        aria-pressed={dark}
-        aria-label={dark ? 'Aktifkan mode terang' : 'Aktifkan mode gelap'}
-        onClick={onTheme}
-      >
-        <Icon name={dark ? 'sun' : 'moon'} size={15} />
-        <span>{dark ? 'Terang' : 'Gelap'}</span>
-      </button>
       <a className="btn btn-primary nav-cta" href="#unduh">
         Unduh Luna
       </a>
@@ -202,17 +204,6 @@ function Nav({ theme, onTheme }) {
             {label}
           </a>
         ))}
-        <button
-          type="button"
-          className="nav-menu-theme"
-          onClick={() => {
-            onTheme();
-            setOpen(false);
-          }}
-        >
-          <Icon name={dark ? 'sun' : 'moon'} size={15} />
-          {dark ? 'Mode terang' : 'Mode gelap'}
-        </button>
         <a className="nav-menu-cta" href="#unduh" onClick={() => setOpen(false)}>
           <Icon name="download" size={15} />
           Unduh Luna
@@ -530,7 +521,7 @@ function Features() {
                     <span>luna</span>
                     <Wave bars={24} active />
                   </div>
-                  <p className="voice-foot">dijawab lewat Groq · suara Luna</p>
+                  <p className="voice-foot">otak AI pilihanmu · suara Luna</p>
                 </div>
               </div>
             </Spot>
@@ -840,7 +831,7 @@ function Work() {
               <span className="step-num">02</span>
               <div>
                 <h3>Bicara seperti biasa</h3>
-                <p>Luna mendengar lewat mikrofon, memahami konteks, dan menyusun jawaban lewat Groq.</p>
+                <p>Luna mendengar lewat mikrofon, memahami konteks, lalu menyusun jawaban dengan otak AI yang kamu pilih.</p>
               </div>
             </Reveal>
             <Reveal className="step" delay={160}>
@@ -878,8 +869,8 @@ function Work() {
             <span className="privacy-icon">
               <Icon name="spark" size={16} />
             </span>
-            <b>Ke Groq</b>
-            <p>Teks perintah dan konteks yang diperlukan dikirim untuk menyusun jawaban. Audio tidak ikut dikirim.</p>
+            <b>Ke penyedia AI</b>
+            <p>Hanya teks perintah dan konteks yang perlu dikirim ke API pilihanmu. Audio tidak ikut dikirim.</p>
           </Reveal>
           <Reveal className="privacy-item" delay={120}>
             <span className="privacy-icon">
@@ -896,6 +887,42 @@ function Work() {
             <p>Tidak membuka kunci HP, tidak mengunggah file tanpa izin, dan tidak menjalankan perintah admin tanpa konfirmasi.</p>
           </Reveal>
         </div>
+      </div>
+
+      <div className="wrap brain">
+        <Reveal className="brain-copy">
+          <p className="eyebrow">Otak AI</p>
+          <h3>Pakai API yang kamu suka.</h3>
+          <p>
+            Luna tidak terkunci ke satu penyedia. Bawaannya Groq karena gratis dan cepat. Kalau kamu
+            sudah punya langganan lain, ganti alamat API, model, dan kuncinya di Pengaturan. Sisanya
+            tetap sama: suara, ingatan, dan kendali PC tidak ikut berubah.
+          </p>
+        </Reveal>
+        <Reveal className="brain-panel" delay={80}>
+          <ul className="brain-list">
+            {PROVIDERS.map(([name, note, isDefault]) => (
+              <li key={name} className={isDefault ? 'is-default' : undefined}>
+                <b>{name}</b>
+                <span>{note}</span>
+              </li>
+            ))}
+          </ul>
+          <dl className="brain-fields">
+            <div>
+              <dt>Alamat API</dt>
+              <dd>https://api.groq.com/openai/v1</dd>
+            </div>
+            <div>
+              <dt>Model</dt>
+              <dd>llama-3.3-70b-versatile</dd>
+            </div>
+            <div>
+              <dt>Kunci</dt>
+              <dd>tersimpan di PC-mu saja</dd>
+            </div>
+          </dl>
+        </Reveal>
       </div>
     </section>
   );
@@ -1179,12 +1206,27 @@ function Cta() {
             <p>Ucapkan namanya, lalu minta sesuatu seperti biasa.</p>
           </div>
         </Reveal>
-        <Reveal as="p" className="cta-meta" delay={220}>
-          Windows 10/11 · {SITE.pcSize} · Android 5.1+ · file di GitHub Releases
-        </Reveal>
-        <Reveal as="p" className="cta-require" delay={240}>
-          Butuh mikrofon dan koneksi internet untuk otak Groq. HP hanya berfungsi sebagai pendamping
-          saat PC menyala.
+        <Reveal as="dl" className="cta-specs" delay={220}>
+          <div>
+            <dt>PC</dt>
+            <dd>Windows 10 atau 11</dd>
+            <small>{SITE.pcSize} · versi {SITE.pcVersion}</small>
+          </div>
+          <div>
+            <dt>HP</dt>
+            <dd>Android 5.1 ke atas</dd>
+            <small>pendamping, butuh PC menyala</small>
+          </div>
+          <div>
+            <dt>Perlu</dt>
+            <dd>Mikrofon dan internet</dd>
+            <small>untuk otak AI, bawaannya Groq gratis</small>
+          </div>
+          <div>
+            <dt>Unduhan</dt>
+            <dd>GitHub Releases</dd>
+            <small>terpisah dari kode situs</small>
+          </div>
         </Reveal>
       </div>
     </section>
@@ -1196,26 +1238,37 @@ function Footer() {
     <footer className="footer">
       <div className="wrap">
         <div className="foot-top">
-          <a className="foot-brand" href="#atas">
-            <Mark size={24} bare />
-            <span>
-              Luna
-              <small>asisten suara pribadi</small>
-            </span>
-          </a>
-          <nav className="foot-nav" aria-label="Navigasi footer">
+          <div className="foot-brand-col">
+            <a className="foot-brand" href="#atas">
+              <Mark size={36} />
+              <span>
+                Luna
+                <small>asisten suara pribadi</small>
+              </span>
+            </a>
+            <p className="foot-note">
+              Tandanya bulan sabit yang juga balon bicara. Luna menjawab saat namanya dipanggil.
+            </p>
+          </div>
+          <nav className="foot-col" aria-label="Navigasi footer">
+            <b>Jelajahi</b>
             {NAV.map(([href, label]) => (
               <a key={href} href={href}>
                 {label}
               </a>
             ))}
           </nav>
+          <div className="foot-col">
+            <b>Unduh</b>
+            <a href={SITE.pc}>Windows · {SITE.pcVersion}</a>
+            <a href={SITE.apk}>Android · {SITE.apkVersion}</a>
+            <a href="https://github.com/arielbudinex-oss/Luna-AI" target="_blank" rel="noreferrer">
+              Kode situs di GitHub
+            </a>
+          </div>
         </div>
-        <p className="foot-note">
-          <span>Tanda Luna</span> Bulan dengan orbit yang sengaja dibiarkan terbuka: selalu menunggu dipanggil.
-        </p>
         <p className="foot-credit">
-          Tampilan karakter: Tsukuyomi oleh{' '}
+          Karakter: Tsukuyomi oleh{' '}
           <a href="https://tyc.rei-yumesaki.net/material/avatar/3d-a/" target="_blank" rel="noreferrer">
             Rei Yumesaki
           </a>
@@ -1233,8 +1286,10 @@ function Footer() {
           </a>
         </p>
         <div className="foot-bottom">
-          <span>© 2026 Luna · PC {SITE.pcVersion} · APK {SITE.apkVersion}</span>
-          <span>Windows 10/11 · Android 5.1+</span>
+          <span>© 2026 Luna</span>
+          <span className="foot-powered">
+            Powered by <b>Xinet Group</b>
+          </span>
         </div>
       </div>
     </footer>
@@ -1242,27 +1297,12 @@ function Footer() {
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(() =>
-    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
-  );
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    try {
-      localStorage.setItem('luna-theme', theme);
-    } catch {
-      // Mode privat bisa menolak localStorage; tema tetap jalan di sesi ini.
-    }
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((value) => (value === 'dark' ? 'light' : 'dark'));
-
   return (
     <>
       <a className="skip" href="#fitur">
         Langsung ke fitur
       </a>
-      <Nav theme={theme} onTheme={toggleTheme} />
+      <Nav />
       <main>
         <Hero />
         <Marquee items={MARQUEE} />

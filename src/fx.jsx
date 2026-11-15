@@ -31,23 +31,22 @@ export function useInView(threshold = 0.18) {
   return [ref, seen];
 }
 
-const CRESCENT = 'M 152.05 44.59 A 88 88 0 1 0 152.05 211.41 A 84 84 0 0 1 152.05 44.59 Z';
-const BARS = [
-  [170, 112, 144],
-  [194, 94, 162],
-  [218, 107, 149],
-];
+// Bulan sabit yang sekaligus balon bicara: ekornya di kiri bawah.
+const MOON =
+  'M134.66 28.01A92 92 0 0 0 47.56 145.36L42 228Q72 216 84.55 196.27A92 92 0 0 0 219.64 158.32A78 78 0 0 1 134.66 28.01Z';
+const MOON_SMALL =
+  'M144.08 28.54A94 94 0 0 0 42.79 144.74L36 234Q70 220 84.19 201.72A94 94 0 0 0 224.57 147.16A72 72 0 0 1 144.08 28.54Z';
+const SQUIRCLE =
+  'M256 128L255.8 141.2L255.1 151.5L253.9 160.8L252.4 169.5L250.3 177.7L247.8 185.5L244.9 192.9L241.5 199.8L237.8 206.4L233.5 212.6L228.9 218.5L223.9 223.9L218.5 228.9L212.6 233.5L206.4 237.8L199.8 241.5L192.9 244.9L185.5 247.8L177.7 250.3L169.5 252.4L160.8 253.9L151.5 255.1L141.2 255.8L128 256L114.8 255.8L104.5 255.1L95.2 253.9L86.5 252.4L78.3 250.3L70.5 247.8L63.1 244.9L56.2 241.5L49.6 237.8L43.4 233.5L37.5 228.9L32.1 223.9L27.1 218.5L22.5 212.6L18.2 206.4L14.5 199.8L11.1 192.9L8.2 185.5L5.7 177.7L3.6 169.5L2.1 160.8L0.9 151.5L0.2 141.2L0 128L0.2 114.8L0.9 104.5L2.1 95.2L3.6 86.5L5.7 78.3L8.2 70.5L11.1 63.1L14.5 56.2L18.2 49.6L22.5 43.4L27.1 37.5L32.1 32.1L37.5 27.1L43.4 22.5L49.6 18.2L56.2 14.5L63.1 11.1L70.5 8.2L78.3 5.7L86.5 3.6L95.2 2.1L104.5 0.9L114.8 0.2L128 0L141.2 0.2L151.5 0.9L160.8 2.1L169.5 3.6L177.7 5.7L185.5 8.2L192.9 11.1L199.8 14.5L206.4 18.2L212.6 22.5L218.5 27.1L223.9 32.1L228.9 37.5L233.5 43.4L237.8 49.6L241.5 56.2L244.9 63.1L247.8 70.5L250.3 78.3L252.4 86.5L253.9 95.2L255.1 104.5L255.8 114.8Z';
 
 export function Mark({ size = 32, muted = false, bare = false, title, className = '' }) {
-  const full = bare ? size >= 26 : size >= 44;
+  const small = size < 40;
   const color = bare ? 'currentColor' : muted ? '#c8d0da' : '#eef2f6';
   const art = bare
-    ? full
-      ? undefined
-      : 'translate(34 0)'
-    : full
-      ? 'translate(5.5 12.8) scale(0.9)'
-      : 'translate(42.4 12.8) scale(0.9)';
+    ? 'translate(-3 0)'
+    : small
+      ? 'translate(25.82 26.16) scale(0.78)'
+      : 'translate(36.3 36.4) scale(0.7)';
 
   return (
     <svg
@@ -59,22 +58,8 @@ export function Mark({ size = 32, muted = false, bare = false, title, className 
       aria-label={title || undefined}
       aria-hidden={title ? undefined : true}
     >
-      {bare ? null : <rect width="256" height="256" rx="58" fill={muted ? '#171e27' : '#10161d'} />}
-      <g transform={art} fill={color}>
-        <path d={CRESCENT} stroke={color} strokeWidth={full ? 6 : 8} strokeLinejoin="round" />
-        {full
-          ? BARS.map(([x, y1, y2]) => (
-              <path
-                key={x}
-                d={`M ${x} ${y1} V ${y2}`}
-                stroke={color}
-                strokeWidth="16"
-                strokeLinecap="round"
-                fill="none"
-              />
-            ))
-          : null}
-      </g>
+      {bare ? null : <path d={SQUIRCLE} fill={muted ? '#171e27' : '#10161d'} />}
+      <path transform={art} fill={color} d={small ? MOON_SMALL : MOON} />
     </svg>
   );
 }
