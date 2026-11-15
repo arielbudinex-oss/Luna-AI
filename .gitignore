@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.vercel/
+.env
+.env.local
+.env.*.local
+*.log
+*.exe
+*.apk
+*.vrm
+.DS_Store
+Thumbs.db
+
+# Alat desain lokal, bukan bagian dari situs
+shot.mjs
+tools/

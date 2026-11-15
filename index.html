@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080b10" />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Luna, asisten suara untuk Windows dan Android. Panggil namanya dan ia mendengar, mengingat, lalu bertindak di PC-mu."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Luna, asisten suara yang tinggal di PC-mu" />
+    <meta
+      property="og:description"
+      content="Panggil namanya. Luna mendengar, mengingat, dan bertindak di Windows maupun Android."
+    />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Luna, bulan yang bicara. Asisten suara untuk Windows dan Android." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Luna, asisten suara pribadi</title>
+    <script>
+      try {
+        var saved = localStorage.getItem('luna-theme');
+        if (saved !== 'light' && saved !== 'dark') {
+          saved = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = saved;
+      } catch (error) {
+        document.documentElement.dataset.theme = 'light';
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

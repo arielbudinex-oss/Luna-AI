@@ -1,0 +1,11 @@
+node_modules
+dist
+.vercel
+.env
+.env.*
+*.log
+*.exe
+*.apk
+*.vrm
+shot.mjs
+tools
