@@ -85,18 +85,6 @@ const CHARACTERS = [
     a: 'Ketemu tiga. Paling baru proposal-v4.docx, kemarin 21.14. Langsung kubuka?',
     tag: '3 hasil',
   },
-  {
-    id: 'alicia',
-    name: 'Alicia',
-    vibe: 'cerah · ramah',
-    credit: 'Alicia Solid © DWANGO Co., Ltd. · Niconi-3D',
-    creditUrl: 'https://3d.nicovideo.jp/alicia/rule.html',
-    src: '/characters/alicia.webp',
-    thumb: '/characters/alicia-thumb.webp',
-    q: 'Besok jam 6 bangunin aku.',
-    a: 'Siap. Alarm 06.00 terpasang. Kubangunkan dengan lagu, bukan bip.',
-    tag: 'pengingat dibuat',
-  },
 ];
 
 const CAPABILITIES = [
@@ -140,7 +128,7 @@ const FAQS = [
   },
   {
     q: 'Karakter di layar bisa diganti?',
-    a: 'Bisa. Stage mendukung model VRM lain. Tiga model di situs ini punya lisensi masing-masing, dan model aslinya tidak diunduh dari sini.',
+    a: 'Bisa. Stage mendukung model VRM lain. Karakter di situs ini punya lisensi masing-masing, dan berkas model aslinya tidak dibagikan di sini.',
   },
   {
     q: 'Apakah Luna bisa mengendalikan semua hal?',
@@ -1041,7 +1029,7 @@ function Characters() {
                 className={`char-option ${index === active ? 'on' : ''}`}
                 onClick={() => setActive(index)}
               >
-                <img src={character.thumb} alt="" loading="lazy" width="64" height="80" />
+                <img src={character.thumb} alt="" loading="lazy" width="208" height="264" />
                 <span className="char-option-copy">
                   <b>{character.name}</b>
                   <small>{character.vibe}</small>
@@ -1051,7 +1039,7 @@ function Characters() {
                 </span>
               </button>
             ))}
-            <p className="char-tip">Tiga model VRM dengan lisensi yang mengizinkan penggunaan ini. Model aslinya tidak disebarkan lewat situs, dan kreditnya ada di tiap kartu. Di aplikasi, kamu juga bisa memuat VRM milikmu sendiri.</p>
+            <p className="char-tip">Ini pratinjau gambar, bukan model 3D yang bisa diputar. Kredit ada di tiap kartu; berkas VRM tidak dibagikan lewat situs. Di aplikasi, kamu bisa memuat VRM milikmu sendiri.</p>
           </div>
 
           <div
@@ -1077,7 +1065,7 @@ function Characters() {
                 </div>
                 <span className="char-live">
                   <i aria-hidden="true" />
-                  stage aktif
+                  pratinjau
                 </span>
               </div>
             </div>
@@ -1247,7 +1235,7 @@ function Footer() {
               </span>
             </a>
             <p className="foot-note">
-              Tandanya bulan sabit yang juga balon bicara. Luna menjawab saat namanya dipanggil.
+              Kamu bicara, Luna menanggapi. Dari obrolan singkat sampai urusan di PC.
             </p>
           </div>
           <nav className="foot-col" aria-label="Navigasi footer">
@@ -1279,10 +1267,6 @@ function Footer() {
             rel="noreferrer"
           >
             VRoid Project
-          </a>
-          , Alicia Solid ©{' '}
-          <a href="https://3d.nicovideo.jp/alicia/rule.html" target="_blank" rel="noreferrer">
-            DWANGO Co., Ltd.
           </a>
         </p>
         <div className="foot-bottom">

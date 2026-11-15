@@ -2119,7 +2119,7 @@ h2 {
   width: 52px;
   height: 66px;
   object-fit: cover;
-  object-position: 50% 16%;
+  object-position: center;
   border-radius: 10px;
   border: 1px solid var(--line);
   filter: grayscale(1) contrast(1.02);
@@ -2214,6 +2214,12 @@ h2 {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char-frame img {
+    animation: none;
   }
 }
 

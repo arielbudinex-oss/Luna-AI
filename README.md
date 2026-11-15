@@ -45,6 +45,5 @@ Demo di situs berjalan sepenuhnya di browser. Ia tidak terhubung ke aplikasi PC,
 
 - Tsukuyomi oleh Rei Yumesaki (夢前黎明), https://tyc.rei-yumesaki.net/material/avatar/3d-a/
 - Vita oleh VRoid Project, https://vroid.com/en/studio
-- Alicia Solid oleh DWANGO Co., Ltd., https://3d.nicovideo.jp/alicia/rule.html
 
 Ketentuan tiap model berlaku. Repo ini tidak membagikan berkas VRM aslinya.
