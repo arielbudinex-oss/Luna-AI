@@ -17,3 +17,4 @@ tools/
 
 # Satu-satunya VRM di repo: sampel resmi VRM spec, boleh didistribusikan
 !public/models/luna.vrm
+tmp-*.jpeg

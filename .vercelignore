@@ -11,3 +11,4 @@ shot.mjs
 tools
 
 !public/models/luna.vrm
+tmp-*.jpeg
