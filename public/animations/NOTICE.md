@@ -31,8 +31,7 @@ limitations under the License.
 
 SPDX-License-Identifier: `Apache-2.0`
 
-The character model `luna.vrm` is a separate work: the official VRM 1.0
-"VRM1_Constraint_Twist_Sample" by pixiv Inc., distributed by the
-vrm-c/vrm-specification project and licensed under the VRM Public License 1.0
-(Apache-2.0 for the specification code). Its embedded VRM metadata allows
-redistribution and modification; credit is shown next to the 3D demo.
+The character model `vita.vrm` is a separate work by the VRoid Project,
+released under CC0 1.0 (public domain dedication). Its embedded VRM metadata
+sets the license to CC0 and allows redistribution without credit; the credit
+shown next to the 3D demo is kept as a courtesy.

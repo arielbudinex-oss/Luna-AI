@@ -15,6 +15,6 @@ Thumbs.db
 shot.mjs
 tools/
 
-# Satu-satunya VRM di repo: sampel resmi VRM spec, boleh didistribusikan
-!public/models/luna.vrm
+# Satu-satunya VRM di repo: model CC0 dari VRoid Project, boleh didistribusikan
+!public/models/vita.vrm
 tmp-*.jpeg

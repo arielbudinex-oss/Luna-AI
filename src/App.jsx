@@ -62,6 +62,8 @@ const CHARACTERS = [
     id: 'tsukuyomi',
     name: 'Tsukuyomi',
     vibe: 'tenang · anggun',
+    accent: '#c6a9ff',
+    accentB: '#f4a8c8',
     credit: '3D Character by Rei Yumesaki（夢前黎明）',
     creditUrl: 'https://tyc.rei-yumesaki.net/material/avatar/3d-a/',
     src: '/characters/tsukuyomi.webp',
@@ -74,6 +76,8 @@ const CHARACTERS = [
     id: 'vita',
     name: 'Vita',
     vibe: 'tegas · misterius',
+    accent: '#8fe4ef',
+    accentB: '#92a8ff',
     credit: 'Vita (ヴィータ) · VRoid Project',
     creditUrl:
       'https://hub.vroid.com/license?allowed_to_use_user=everyone&characterization_allowed_user=everyone&corporate_commercial_use=allow&credit=unnecessary&modification=allow&personal_commercial_use=profit&redistribution=allow&sexual_expression=allow&version=1&violent_expression=allow',
@@ -1187,6 +1191,7 @@ function Characters() {
                 aria-controls="char-panel"
                 tabIndex={index === active ? 0 : -1}
                 className={`char-option ${index === active ? 'on' : ''}`}
+                style={{ '--char-a': character.accent, '--char-b': character.accentB }}
                 onClick={() => setActive(index)}
               >
                 <img src={character.thumb} alt="" loading="lazy" width="208" height="264" />
@@ -1207,6 +1212,7 @@ function Characters() {
             id="char-panel"
             role="tabpanel"
             aria-labelledby={`char-tab-${current.id}`}
+            style={{ '--char-a': current.accent, '--char-b': current.accentB }}
           >
             <div className="char-frame">
               <img
@@ -1363,19 +1369,15 @@ function CharacterDemo() {
             </div>
 
             <p className="vd-credit">
-              Model 3D <b>Twist Sample</b> oleh{' '}
-              <a
-                href="https://github.com/vrm-c/vrm-specification/tree/master/samples/VRM1_Constraint_Twist_Sample"
-                target="_blank"
-                rel="noreferrer"
-              >
-                pixiv Inc.
+              Model 3D <b>Vita</b> oleh{' '}
+              <a href="https://vroid.com" target="_blank" rel="noreferrer">
+                VRoid Project
               </a>
               {' · '}gerakan idle oleh{' '}
               <a href={`${import.meta.env.BASE_URL}animations/NOTICE.md`} target="_blank" rel="noreferrer">
                 Overte
               </a>
-              . Lisensi VRM Public License 1.0 dan Apache-2.0.
+              . Lisensi CC0 1.0 dan Apache-2.0.
             </p>
           </aside>
         </div>

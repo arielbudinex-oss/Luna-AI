@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
+import { VRMLoaderPlugin } from '@pixiv/three-vrm';
 import {
   VRMAnimationLoaderPlugin,
   VRMLookAtQuaternionProxy,
   createVRMAnimationClip,
 } from '@pixiv/three-vrm-animation';
 
-const MODEL_URL = '/models/luna.vrm';
+const MODEL_URL = `${import.meta.env.BASE_URL}models/vita.vrm`;
+// Model VRM 0.x ini menghadap kamera setelah dibalik setengah putaran;
+// rotasi dasar juga menutupi arah hadap bawaan yang berbeda dari VRM 1.0.
+const MODEL_YAW = Math.PI;
 // Dua idle rekaman Overte (Apache-2.0, lihat public/animations/NOTICE.md):
 // napas, geser berat badan, dan jari yang tidak pernah benar-benar diam.
 const IDLE_CLIPS = ['idle-7.vrma', 'idle-3.vrma'];
@@ -256,7 +259,6 @@ export default function CharacterStage({ mood, talking }) {
       (gltf) => {
         if (disposed) return;
         vrm = gltf.userData.vrm;
-        VRMUtils.rotateVRM0(vrm);
         dressMaterials(vrm);
         vrm.scene.traverse((obj) => {
           obj.frustumCulled = false;
@@ -376,7 +378,7 @@ export default function CharacterStage({ mood, talking }) {
       time += dt;
       yaw += (yawTarget - yaw) * damp(10, dt);
       const sway = reduceMotion ? 0 : Math.sin(time * 0.55) * 0.028;
-      vrm.scene.rotation.y = yaw + sway;
+      vrm.scene.rotation.y = MODEL_YAW + yaw + sway;
 
       if (mixer && idles.length && !reduceMotion) {
         mixer.update(dt);

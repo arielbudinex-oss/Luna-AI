@@ -10,5 +10,5 @@ dist
 shot.mjs
 tools
 
-!public/models/luna.vrm
+!public/models/vita.vrm
 tmp-*.jpeg
