@@ -8,12 +8,30 @@ html.intro-lock {
   overflow: hidden;
 }
 
+.nav {
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    opacity 0.4s ease;
+}
+
 .nav-brand {
   transition: opacity 0.3s ease;
 }
 
 html.intro-run .nav-brand {
   opacity: 0;
+}
+
+html.intro-run .nav {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.intro-out .nav {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.55s ease 0.75s;
 }
 
 .intro {
@@ -111,7 +129,27 @@ html.intro-run .nav-brand {
   padding: 0 24px;
   text-align: center;
   pointer-events: none;
-  animation: introCopyOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) 1.48s both;
+  animation: introCopyOut 0.42s cubic-bezier(0.4, 0, 0.2, 1) 1.95s both;
+}
+
+.intro-copy::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(72vw, 900px);
+  height: min(30vw, 300px);
+  transform: translate(-50%, -54%);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(216, 233, 241, 0.16),
+    rgba(216, 233, 241, 0.04) 55%,
+    transparent 76%
+  );
+  opacity: 0;
+  animation: introFadeIn 1.4s ease-out 0.2s both;
+  pointer-events: none;
 }
 
 .intro.is-quick .intro-copy {
@@ -120,64 +158,60 @@ html.intro-run .nav-brand {
   transition: opacity 0.4s ease;
 }
 
-.intro-kicker {
+.intro-title {
+  position: relative;
+  margin: 0;
+  font-size: clamp(52px, 10.6vw, 160px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  color: var(--on-dark);
+  white-space: nowrap;
+}
+
+.intro-title-line {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.intro-title-sheen {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  gap: clamp(10px, 1.2vw, 14px);
-  margin: 0 0 clamp(18px, 2.4vw, 28px);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.3em;
-  padding-left: 0.3em;
-  text-transform: uppercase;
-  color: rgba(226, 238, 246, 0.6);
-  opacity: 0;
-  animation: introRise 0.8s ease-out 0.08s both;
-}
-
-.intro-jp {
-  font-size: 11.5px;
-  letter-spacing: 0.26em;
-  color: #bcdcd6;
-}
-
-.intro-rule {
-  width: 26px;
-  height: 1px;
-  background: rgba(226, 238, 246, 0.22);
-}
-
-.intro-hello {
-  margin: 0;
-  font-size: clamp(40px, 8.4vw, 116px);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  color: var(--on-dark);
-}
-
-.intro-hello + .intro-hello {
-  margin-top: 0.06em;
-}
-
-.intro-whisper {
-  display: inline-block;
-  margin-right: 0.22em;
-  opacity: 0;
-  will-change: transform, filter, opacity;
-  animation: introBlurIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(0.16s + var(--i) * 0.07s) both;
-}
-
-.intro-whisper:last-child {
-  margin-right: 0;
-}
-
-.intro-hello-dim .intro-whisper {
-  background-image: linear-gradient(96deg, #f1f6fa 8%, #c8d7e3 55%, #8fa3b6 100%);
+  justify-content: center;
+  letter-spacing: inherit;
+  background-image: linear-gradient(
+    100deg,
+    transparent 43%,
+    rgba(255, 255, 255, 0.92) 50%,
+    transparent 57%
+  );
+  background-size: 250% 100%;
+  background-position: 125% 0;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  animation: introTitleSheen 0.9s cubic-bezier(0.35, 0, 0.2, 1) 1.06s both;
+}
+
+.intro-letter {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, filter, opacity;
+  background-image: linear-gradient(180deg, #ffffff 0%, #eef5fa 46%, #b6c9d8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  filter: blur(14px);
+  transform: translateY(0.46em) rotateX(48deg) scale(0.97);
+  animation: introLetterIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(0.14s + var(--i) * 0.032s)
+    both;
 }
 
 /* ---------- logo besar ---------- */
@@ -230,7 +264,7 @@ html.intro-run .nav-brand {
     transparent 74%
   );
   opacity: 0;
-  animation: introFadeIn 1.1s ease-out 1.72s both;
+  animation: introFadeIn 1.1s ease-out 1.96s both;
 }
 
 .intro-fly {
@@ -247,7 +281,7 @@ html.intro-run .nav-brand {
   display: inline-flex;
   color: #e9f1f7;
   opacity: 0;
-  animation: introMarkIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.76s both;
+  animation: introMarkIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2s both;
 }
 
 .intro-mark svg {
@@ -255,7 +289,7 @@ html.intro-run .nav-brand {
   height: var(--mark-size);
   overflow: visible;
   transform-origin: 50% 50%;
-  animation: introBreathe 0.8s ease-in-out 2.92s both;
+  animation: introBreathe 0.8s ease-in-out 3.15s both;
 }
 
 .intro-mark svg path {
@@ -264,11 +298,11 @@ html.intro-run .nav-brand {
 }
 
 .intro-mark svg path:first-of-type {
-  animation: introBadgeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.76s both;
+  animation: introBadgeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2s both;
 }
 
 .intro-mark svg path:last-of-type {
-  animation: introInkIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.9s both;
+  animation: introInkIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.14s both;
 }
 
 .intro.is-leaving .intro-mark,
@@ -322,8 +356,8 @@ html.intro-run .nav-brand {
   transform: translateY(112%);
   will-change: transform, filter, opacity;
   animation:
-    introWordIn 0.95s cubic-bezier(0.16, 1, 0.3, 1) 1.96s both,
-    introShine 1.2s cubic-bezier(0.35, 0, 0.2, 1) 2.6s both;
+    introWordIn 0.95s cubic-bezier(0.16, 1, 0.3, 1) 2.2s both,
+    introShine 1.2s cubic-bezier(0.35, 0, 0.2, 1) 2.85s both;
 }
 
 .intro.is-leaving .intro-word-mask {
@@ -356,7 +390,7 @@ html.intro-run .nav-brand {
   background: linear-gradient(90deg, transparent, rgba(196, 226, 232, 0.5), transparent);
   transform: scaleX(0);
   opacity: 0;
-  animation: introLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2.78s both;
+  animation: introLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) 3s both;
   pointer-events: none;
 }
 
@@ -469,27 +503,36 @@ html.intro-run .nav-brand {
   }
 }
 
-@keyframes introRise {
-  from {
+@keyframes introTitleSheen {
+  0% {
     opacity: 0;
-    transform: translateY(26px);
+    background-position: 125% 0;
   }
-  to {
+  18% {
     opacity: 1;
-    transform: translateY(0);
+  }
+  72% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-position: -25% 0;
   }
 }
 
-@keyframes introBlurIn {
-  from {
+@keyframes introLetterIn {
+  0% {
     opacity: 0;
-    filter: blur(12px);
-    transform: translateY(0.28em);
+    filter: blur(14px);
+    transform: translateY(0.46em) rotateX(48deg) scale(0.97);
   }
-  to {
+  55% {
+    opacity: 1;
+  }
+  100% {
     opacity: 1;
     filter: blur(0);
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -577,22 +620,12 @@ html.intro-run .nav-brand {
 
 @media (max-width: 560px) {
   .intro-copy {
-    padding: 0 20px;
+    padding: 0 18px;
   }
 
-  .intro-kicker {
-    margin-bottom: 18px;
-    font-size: 9px;
-    letter-spacing: 0.24em;
-    padding-left: 0.24em;
-  }
-
-  .intro-jp {
-    font-size: 10px;
-  }
-
-  .intro-hello {
-    font-size: clamp(38px, 10.6vw, 52px);
+  .intro-title {
+    font-size: clamp(36px, 12vw, 64px);
+    letter-spacing: -0.05em;
   }
 
   .intro-mark-stage {

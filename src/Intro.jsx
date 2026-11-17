@@ -3,14 +3,9 @@ import { Mark, prefersReduced } from './fx.jsx';
 
 const KEY = 'luna-intro-seen';
 const BRAND = 'Luna';
-const AUTO_MS = 3800;
-const DOCK_MS = 1060;
-const WORD_READY_MS = 2000;
-
-const LINES = [
-  { text: 'Halo, aku Luna.', dim: false },
-  { text: 'Siap mendengar.', dim: true },
-];
+const HEADLINE = 'Introduction';
+const AUTO_MS = 4300;
+const WORD_READY_MS = 2300;
 
 const params = () => {
   try {
@@ -145,7 +140,7 @@ export default function Intro() {
     };
 
     const elapsed = Date.now() - started.current;
-    if (elapsed < 1900) setEarly(true);
+    if (elapsed < 2300) setEarly(true);
     const markTrip = flip(
       markRef.current?.querySelector('svg'),
       document.querySelector('[data-nav-mark] svg'),
@@ -233,25 +228,18 @@ export default function Intro() {
       <span className="intro-bg" aria-hidden="true" />
       <Dust />
       <div className="intro-copy">
-        <p className="intro-kicker">
-          <span className="intro-jp" lang="ja">
-            ルナ
+        <h1 className="intro-title" aria-label="Introduction">
+          <span className="intro-title-line" aria-hidden="true">
+            {HEADLINE.split('').map((ch, i) => (
+              <span className="intro-letter" key={i} style={{ '--i': i }}>
+                {ch}
+              </span>
+            ))}
           </span>
-          <span className="intro-rule" aria-hidden="true" />
-          <span>asisten suara pribadi</span>
-        </p>
-        {LINES.map((line, li) => (
-          <p className={`intro-hello${line.dim ? ' intro-hello-dim' : ''}`} key={line.text}>
-            <span className="sr-only">{line.text}</span>
-            <span aria-hidden="true">
-              {line.text.split(' ').map((word, wi) => (
-                <span className="intro-whisper" key={wi} style={{ '--i': li * 2 + wi }}>
-                  {word}
-                </span>
-              ))}
-            </span>
-          </p>
-        ))}
+          <span className="intro-title-sheen" aria-hidden="true">
+            {HEADLINE}
+          </span>
+        </h1>
       </div>
       <div className="intro-lockup" aria-hidden="true">
         <div className="intro-mark-stage">

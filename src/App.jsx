@@ -89,74 +89,62 @@ const SKILLS = [
   {
     icon: 'spark',
     title: 'Aplikasi & musik',
-    text: 'Buka aplikasi yang terpasang, putar lagu, atur volume PC.',
-    cmd: 'open:spotify',
+    text: 'Buka aplikasi, putar lagu, atur volume.',
   },
   {
     icon: 'window',
     title: 'Kendali jendela',
-    text: 'Pindahkan fokus, kecilkan, besarkan, atau tutup jendela yang kamu sebut.',
-    cmd: 'window_focus:visual studio code',
+    text: 'Pindah fokus, kecilkan, atau tutup jendela.',
   },
   {
     icon: 'clipboard',
     title: 'Clipboard',
-    text: 'Baca isi clipboard dan salin teks baru ke sana tanpa membuka aplikasi.',
-    cmd: 'clipboard_set:ringkasan rapat',
+    text: 'Baca dan isi clipboard tanpa pindah aplikasi.',
   },
   {
     icon: 'folder',
     title: 'File & folder',
-    text: 'Cari file di folder rumah, baca isinya, dan buat folder baru.',
-    cmd: 'file_search:proposal',
+    text: 'Cari, baca, dan rapikan berkas.',
   },
   {
     icon: 'cursor',
     title: 'Klik elemen UI',
-    text: 'Temukan tombol atau menu lewat namanya, lalu klik lewat UI Automation.',
-    cmd: 'uia_click:Simpan',
+    text: 'Klik tombol atau menu lewat namanya.',
   },
   {
     icon: 'search',
     title: 'Web & situs',
-    text: 'Cari di Google atau buka alamat situs langsung dari percakapan.',
-    cmd: 'web_search:jadwal KRL',
+    text: 'Telusuri web dari percakapan.',
   },
   {
     icon: 'deck',
     title: 'Presentasi',
-    text: 'Susun kerangka, lalu bangun file PowerPoint asli dari topik yang kamu minta.',
-    cmd: 'ppt:riset pasar',
+    text: 'Bangun file PowerPoint dari satu topik.',
   },
   {
     icon: 'screen',
     title: 'Layar & input',
-    text: 'Ambil tangkapan layar, klik koordinat, ketik, dan tekan kombinasi tombol.',
-    cmd: 'screenshot',
+    text: 'Tangkap layar, ketik, tekan tombol.',
   },
   {
     icon: 'list',
     title: 'Proses PC',
-    text: 'Lihat proses yang paling berat, lalu hentikan satu yang kamu pilih.',
-    cmd: 'process_list',
+    text: 'Pantau dan hentikan proses berat.',
   },
   {
     icon: 'calendar',
     title: 'Jadwal & ingatan',
-    text: 'Pengingat harian atau mingguan, tunda sebentar, dan ingat obrolan lama.',
-    cmd: 'jadwal:senin 07.00',
+    text: 'Pengingat, tunda, dan ingatan obrolan.',
   },
   {
     icon: 'terminal',
     title: 'Jaringan & sistem',
-    text: 'Cek jaringan, buka pengaturan router, kunci PC, atau atur suara.',
-    cmd: 'network',
+    text: 'Periksa jaringan, router, dan sistem.',
   },
   {
     icon: 'phone',
     title: 'HP jadi remot',
-    text: 'Pasangkan lewat token, lihat layar PC, dan kirim perintah dari HP.',
-    cmd: 'pair:token',
+    text: 'Pantau dan kendalikan PC dari HP.',
   },
 ];
 
@@ -499,9 +487,6 @@ function Hero() {
   return (
     <section className="hero" id="atas" data-rest>
       <div className="wrap hero-center">
-        <Reveal as="p" className="hero-badge">
-          <span>Luna — asisten suara pribadi</span>
-        </Reveal>
         <Reveal as="h1" delay={50}>
           <span className="hl">
             <span>Bilang saja.</span>
@@ -511,9 +496,8 @@ function Hero() {
           </span>
         </Reveal>
         <Reveal as="p" className="hero-lead" delay={110}>
-          Luna tinggal di komputermu dan bekerja lewat suara. Panggil namanya saat tanganmu masih
-          sibuk, lalu biarkan ia memutar lagu atau memasang pengingat. Jawabannya keluar sebagai
-          suara sambil kamu tetap di jendela yang sama.
+          Panggil namanya saat tanganmu sibuk. Luna memutar lagu, memasang pengingat, dan menjawab
+          dengan suara tanpa kamu pindah jendela.
         </Reveal>
         <Reveal className="hero-actions" delay={160}>
           <Magnet>
@@ -714,9 +698,7 @@ function Features() {
             <p className="eyebrow">Kemampuan</p>
             <h3>Bukan cuma menjawab. <span>Dia kerjakan.</span></h3>
             <p>
-              Perintah harian dipetakan ke aksi Windows yang nyata: membuka aplikasi, mengatur
-              jendela, menyentuh clipboard, mencari file, sampai membangun presentasi. Semuanya
-              dari satu percakapan.
+              Satu percakapan menggerakkan aplikasi, jendela, berkas, dan presentasi di PC-mu.
             </p>
             <ol className="skill-loop" aria-label="Alur kerja Luna">
               <li>
@@ -754,7 +736,6 @@ function Features() {
                 <div className="cap-copy">
                   <b>{skill.title}</b>
                   <p>{skill.text}</p>
-                  <code>{skill.cmd}</code>
                 </div>
               </Reveal>
             ))}

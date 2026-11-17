@@ -41,24 +41,6 @@
   text-align: center;
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 30px;
-  padding: 0 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.035);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  font-family: var(--mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(232, 237, 242, 0.78);
-}
-
 h1 {
   max-width: 1020px;
   margin-top: 26px;
@@ -2842,12 +2824,6 @@ h2 {
     letter-spacing: -0.045em;
   }
 
-  .hero-badge {
-    height: 28px;
-    font-size: 9.5px;
-    letter-spacing: 0.14em;
-  }
-
   .hero-lead {
     font-size: 15px;
   }
@@ -2982,13 +2958,6 @@ h2 {
 
   .hero-actions .magnet .btn {
     width: 100%;
-  }
-
-  .hero-badge {
-    gap: 7px;
-    padding: 0 11px;
-    font-size: 9px;
-    letter-spacing: 0.1em;
   }
 
   .appwin {
@@ -3327,7 +3296,7 @@ html[data-theme='dark'] .char-option.on .char-check {
 }
 
 .capability-intro h3 span {
-  background: linear-gradient(96deg, var(--sea-lift), var(--peri) 78%);
+  background: linear-gradient(96deg, #f4f8fb 6%, #c3d2df 62%, #8ea3b5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -3366,12 +3335,7 @@ html[data-theme='dark'] .char-option.on .char-check {
   font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.16em;
-  color: var(--sea);
-}
-
-.skill-loop li:nth-child(2) span,
-.skill-loop li:nth-child(4) span {
-  color: var(--peri);
+  color: rgba(196, 212, 224, 0.62);
 }
 
 .skill-loop b {
@@ -3407,39 +3371,27 @@ html[data-theme='dark'] .char-option.on .char-check {
 
 .capability-item {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-columns: 34px minmax(0, 1fr);
   gap: 13px;
-  padding: 16px 17px 15px;
+  padding: 16px 17px;
   border-radius: 16px;
   border: 1px solid var(--line);
   background:
-    linear-gradient(150deg, rgba(127, 210, 198, 0.13), rgba(147, 166, 221, 0.06) 58%, transparent 88%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 58%),
     var(--surface);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.capability-item:nth-child(3n + 2) {
-  background:
-    linear-gradient(150deg, rgba(147, 166, 221, 0.14), rgba(127, 210, 198, 0.05) 58%, transparent 88%),
-    var(--surface);
-}
-
 .cap-icon {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  border: 1px solid rgba(127, 210, 198, 0.32);
-  background: rgba(127, 210, 198, 0.18);
-  color: #9fe6db;
-}
-
-.capability-item:nth-child(3n + 2) .cap-icon {
-  border-color: rgba(147, 166, 221, 0.34);
-  background: rgba(147, 166, 221, 0.2);
-  color: var(--peri-soft);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  color: #d8e4ee;
 }
 
 .cap-copy {
@@ -3448,47 +3400,24 @@ html[data-theme='dark'] .char-option.on .char-check {
 
 .capability-item b {
   display: block;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .capability-item p {
-  margin-top: 4px;
-  font-size: 12.2px;
-  line-height: 1.55;
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 1.5;
   color: var(--ink-faint);
   text-wrap: pretty;
-}
-
-.capability-item code {
-  display: inline-block;
-  max-width: 100%;
-  margin-top: 9px;
-  padding: 3px 8px;
-  overflow: hidden;
-  border-radius: 7px;
-  border: 1px solid rgba(127, 210, 198, 0.14);
-  background: rgba(127, 210, 198, 0.08);
-  font-family: var(--sans);
-  font-size: 10.2px;
-  letter-spacing: 0.01em;
-  color: var(--sea-lift);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.capability-item:nth-child(3n + 2) code {
-  border-color: rgba(147, 166, 221, 0.16);
-  background: rgba(147, 166, 221, 0.09);
-  color: var(--peri-soft);
 }
 
 @media (hover: hover) {
   .capability-item:hover {
     transform: translateY(-2px);
-    border-color: rgba(127, 210, 198, 0.32);
-    box-shadow: 0 16px 34px rgba(10, 26, 32, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 34px rgba(8, 14, 20, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 }
 
