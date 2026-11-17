@@ -1,53 +1,50 @@
 @font-face {
-  font-family: 'Inter';
+  font-family: 'Geist';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('./assets/fonts/inter-var.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Geist Mono';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('./assets/fonts/geist-mono.woff2') format('woff2');
+  src: url('./assets/fonts/geist.woff2') format('woff2');
 }
 
 :root {
-  --night: #080b10;
-  --night-2: #0b0f15;
-  --slab: #10161d;
-  --paper: #eef1f4;
-  --paper-2: #e6eaee;
-  --surface: #ffffff;
-  --ink: #0e141b;
-  --ink-soft: #3c4652;
-  --ink-faint: #525e6b;
-  --line: rgba(14, 20, 27, 0.1);
-  --line-strong: rgba(14, 20, 27, 0.2);
-  --line-dark: rgba(255, 255, 255, 0.08);
-  --on-dark: #eef2f6;
-  --on-dark-soft: rgba(238, 242, 246, 0.72);
-  --on-dark-faint: rgba(238, 242, 246, 0.64);
-  --accent: #2f4dff;
-  --accent-lift: #aebfff;
-  --accent-soft: #e7ebff;
-  --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  --night: #070a0e;
+  --night-2: #0b0f14;
+  --slab: #0f141a;
+  --paper: #edf0f4;
+  --paper-2: #e2e7ec;
+  --surface: #f7f9fb;
+  --ink: #12171d;
+  --ink-soft: #46505b;
+  --ink-faint: #626d79;
+  --line: rgba(18, 23, 29, 0.1);
+  --line-strong: rgba(18, 23, 29, 0.2);
+  --line-dark: rgba(232, 237, 242, 0.09);
+  --on-dark: #e8edf2;
+  --on-dark-soft: rgba(232, 237, 242, 0.72);
+  --on-dark-faint: rgba(232, 237, 242, 0.64);
+  --accent: #a9bccd;
+  --accent-lift: #d8e4ef;
+  --accent-soft: #e4edf4;
+  --sea: #7fd2c6;
+  --sea-lift: #b8ede4;
+  --sea-deep: #3f8e85;
+  --peri: #93a6dd;
+  --peri-soft: #c9d4f2;
+  --sans: 'Geist', 'Yu Gothic UI', 'Hiragino Sans', 'Noto Sans JP', 'Segoe UI', system-ui, sans-serif;
+  --mono: var(--sans);
 }
 
 html[data-theme='dark'] {
   color-scheme: dark;
-  --paper: #0c1117;
-  --paper-2: #0f151d;
-  --surface: #10161d;
+  --paper: #0a0e13;
+  --paper-2: #0c1116;
+  --surface: #0f141a;
   --ink: #eef2f6;
-  --ink-soft: rgba(238, 242, 246, 0.74);
-  --ink-faint: rgba(238, 242, 246, 0.66);
+  --ink-soft: rgba(232, 237, 242, 0.74);
+  --ink-faint: rgba(232, 237, 242, 0.66);
   --line: rgba(255, 255, 255, 0.09);
   --line-strong: rgba(255, 255, 255, 0.2);
-  --accent-soft: rgba(47, 77, 255, 0.22);
+  --accent-soft: rgba(169, 188, 205, 0.22);
 }
 
 * {
@@ -121,7 +118,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid #7d92ff;
+  outline: 2px solid #c3d2e0;
   outline-offset: 3px;
   border-radius: 8px;
 }
@@ -191,7 +188,7 @@ section {
 
 .btn-primary {
   background: var(--on-dark);
-  color: #0b0f15;
+  color: #0b0f14;
 }
 
 .btn-primary:hover {
@@ -328,7 +325,7 @@ section {
   padding: 8px 8px 8px 14px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(8, 11, 16, 0.55);
+  background: rgba(7, 10, 14, 0.55);
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
   transition:
@@ -337,7 +334,7 @@ section {
 }
 
 .nav.scrolled {
-  background: rgba(8, 11, 16, 0.84);
+  background: rgba(7, 10, 14, 0.84);
   border-color: rgba(255, 255, 255, 0.11);
 }
 
@@ -362,7 +359,7 @@ section {
   padding: 9px 13px;
   border-radius: 999px;
   font-size: 13.5px;
-  color: rgba(238, 242, 246, 0.76);
+  color: rgba(232, 237, 242, 0.76);
   transition:
     color 0.2s ease,
     background 0.2s ease;
@@ -373,8 +370,13 @@ section {
   background: rgba(255, 255, 255, 0.05);
 }
 
+.nav-links a[aria-current='location'] {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .nav-cta {
-  height: 38px;
+  height: 40px;
   padding: 0 16px;
   font-size: 13px;
 }
@@ -382,8 +384,8 @@ section {
 .nav-burger {
   display: none;
   place-items: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--on-dark);
@@ -398,7 +400,7 @@ section {
   padding: 8px;
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #0b0f15;
+  background: #0b0f14;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
 }
 
@@ -406,10 +408,11 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 44px;
   padding: 12px 14px;
   border-radius: 12px;
   font-size: 14px;
-  color: rgba(238, 242, 246, 0.88);
+  color: rgba(232, 237, 242, 0.88);
 }
 
 .nav-menu a:hover {
@@ -421,7 +424,7 @@ section {
   justify-content: center;
   margin-top: 4px;
   background: var(--on-dark);
-  color: #0b0f15;
+  color: #0b0f14;
   font-weight: 600;
 }
 
@@ -458,14 +461,13 @@ section {
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.2em;
-  color: rgba(238, 242, 246, 0.72);
+  color: rgba(232, 237, 242, 0.72);
 }
 
-.mq-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(174, 191, 255, 0.5);
+.mq-sep {
+  width: 1px;
+  height: 12px;
+  background: rgba(216, 228, 239, 0.28);
 }
 
 @keyframes marquee {
@@ -491,8 +493,6 @@ section {
   .mq-track,
   .appwin,
   .stage-ring.r2,
-  .stage-live i,
-  .typing-dots i,
   .cta-mark,
   .orb-ring.r2 {
     animation: none !important;

@@ -73,6 +73,53 @@ const PATHS = {
     </>
   ),
   moon: <path d="M20 14.4A8.2 8.2 0 0 1 9.6 4a8.2 8.2 0 1 0 10.4 10.4Z" />,
+  window: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
+      <path d="M3.5 9h17M7 6.8h.01M9.6 6.8h.01" />
+    </>
+  ),
+  clipboard: (
+    <>
+      <rect x="5.5" y="4.5" width="13" height="16.5" rx="2.5" />
+      <path d="M9.5 4.2a2.5 2.5 0 0 1 5 0M9 10.2h6M9 13.8h6M9 17.4h3.6" />
+    </>
+  ),
+  folder: (
+    <>
+      <path d="M3.5 7.2a2 2 0 0 1 2-2h4l2 2.4h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V7.2Z" />
+      <path d="M3.5 11h17" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10.6" cy="10.6" r="6.1" />
+      <path d="m15.2 15.2 4.3 4.3" />
+    </>
+  ),
+  cursor: (
+    <>
+      <path d="M6 4.2 18 11l-5.2 1.8L10.8 18 6 4.2Z" />
+    </>
+  ),
+  deck: (
+    <>
+      <rect x="3.5" y="5" width="17" height="11" rx="2" />
+      <path d="M12 16v3.5M8.5 20h7M8 9.4h8M8 12.2h5" />
+    </>
+  ),
+  list: (
+    <>
+      <path d="M8.5 7h11M8.5 12h11M8.5 17h7" />
+      <path d="M4.5 7h.01M4.5 12h.01M4.5 17h.01" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3.4 19 6v5.2c0 4.2-2.8 7.4-7 9.4-4.2-2-7-5.2-7-9.4V6l7-2.6Z" />
+      <path d="m9 11.7 2 2 4-4.2" />
+    </>
+  ),
 };
 
 export function Icon({ name, size = 18, strokeWidth = 1.7, className = '' }) {

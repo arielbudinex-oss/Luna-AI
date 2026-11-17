@@ -14,3 +14,6 @@ Thumbs.db
 # Alat desain lokal, bukan bagian dari situs
 shot.mjs
 tools/
+
+# Satu-satunya VRM di repo: sampel resmi VRM spec, boleh didistribusikan
+!public/models/luna.vrm

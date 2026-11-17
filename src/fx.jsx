@@ -317,18 +317,18 @@ export function Wave({ bars = 18, active = false, className = '' }) {
 
 export function Marquee({ items = [] }) {
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className="marquee" data-rest aria-hidden="true">
       <div className="mq-track">
         {items.map((item) => (
           <span className="mq-item" key={item}>
             {item}
-            <i className="mq-dot" />
+            <i className="mq-sep" aria-hidden="true" />
           </span>
         ))}
         {items.map((item) => (
           <span className="mq-item" key={`dup-${item}`}>
             {item}
-            <i className="mq-dot" />
+            <i className="mq-sep" aria-hidden="true" />
           </span>
         ))}
       </div>

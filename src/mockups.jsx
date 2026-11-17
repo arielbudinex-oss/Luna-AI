@@ -54,10 +54,7 @@ export function PhoneMock() {
         <Mark size={20} />
         <div>
           <b>Luna</b>
-          <small>
-            <i className="ph-dot" />
-            terhubung
-          </small>
+          <small>terhubung</small>
         </div>
         <span className="ph-tag">PC</span>
       </div>

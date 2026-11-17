@@ -1,0 +1,620 @@
+/* ============================================================
+   Luna — pembuka: teks dulu, lalu logo besar, lalu menyatu
+   dengan hero lewat satu tarikan fokus (bukan slide terpisah).
+   Semua gerak hanya transform/opacity, plus satu canvas debu.
+   ============================================================ */
+
+html.intro-lock {
+  overflow: hidden;
+}
+
+.nav-brand {
+  transition: opacity 0.3s ease;
+}
+
+html.intro-run .nav-brand {
+  opacity: 0;
+}
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: #eef2f6;
+}
+
+/* ---------- latar yang sama dengan hero ---------- */
+
+.intro-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(1080px 640px at 50% -16%, rgba(143, 196, 208, 0.28), transparent 64%),
+    radial-gradient(820px 560px at 50% 30%, rgba(93, 132, 143, 0.13), transparent 70%),
+    radial-gradient(760px 520px at 86% 24%, rgba(147, 166, 221, 0.14), transparent 66%),
+    radial-gradient(640px 460px at 8% 34%, rgba(82, 175, 164, 0.1), transparent 64%),
+    radial-gradient(1100px 560px at 50% 118%, rgba(118, 156, 172, 0.08), transparent 72%),
+    linear-gradient(180deg, #0d1218 0%, #080b0f 42%, var(--night) 72%);
+  transform-origin: 50% 40%;
+  transition:
+    opacity 0.95s ease 0.06s,
+    transform 1.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro-bg::before {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  background:
+    radial-gradient(560px 420px at 30% 40%, rgba(127, 210, 198, 0.11), transparent 62%),
+    radial-gradient(640px 480px at 70% 62%, rgba(147, 166, 221, 0.09), transparent 64%);
+  animation: introDrift 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.intro-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(122% 92% at 50% 46%, transparent 48%, rgba(3, 5, 8, 0.5) 100%);
+  pointer-events: none;
+}
+
+.intro.is-leaving .intro-bg {
+  opacity: 0;
+  transform: scale(1.035);
+}
+
+.intro.is-quick .intro-bg {
+  opacity: 0;
+  transform: none;
+  transition-duration: 0.5s;
+  transition-delay: 0s;
+}
+
+/* ---------- debu halus ---------- */
+
+.intro-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+
+.intro.is-leaving .intro-dust {
+  opacity: 0;
+}
+
+.intro.is-quick .intro-dust {
+  opacity: 0;
+}
+
+/* ---------- teks pembuka ---------- */
+
+.intro-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  text-align: center;
+  pointer-events: none;
+  animation: introCopyOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) 1.48s both;
+}
+
+.intro.is-quick .intro-copy {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.intro-kicker {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 14px);
+  margin: 0 0 clamp(18px, 2.4vw, 28px);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  text-transform: uppercase;
+  color: rgba(226, 238, 246, 0.6);
+  opacity: 0;
+  animation: introRise 0.8s ease-out 0.08s both;
+}
+
+.intro-jp {
+  font-size: 11.5px;
+  letter-spacing: 0.26em;
+  color: #bcdcd6;
+}
+
+.intro-rule {
+  width: 26px;
+  height: 1px;
+  background: rgba(226, 238, 246, 0.22);
+}
+
+.intro-hello {
+  margin: 0;
+  font-size: clamp(40px, 8.4vw, 116px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  color: var(--on-dark);
+}
+
+.intro-hello + .intro-hello {
+  margin-top: 0.06em;
+}
+
+.intro-whisper {
+  display: inline-block;
+  margin-right: 0.22em;
+  opacity: 0;
+  will-change: transform, filter, opacity;
+  animation: introBlurIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(0.16s + var(--i) * 0.07s) both;
+}
+
+.intro-whisper:last-child {
+  margin-right: 0;
+}
+
+.intro-hello-dim .intro-whisper {
+  background-image: linear-gradient(96deg, #f1f6fa 8%, #c8d7e3 55%, #8fa3b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- logo besar ---------- */
+
+.intro-lockup {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 1.9vw, 24px);
+  pointer-events: none;
+}
+
+.intro.is-quick .intro-lockup {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.intro-mark-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(148px, 15.4vw, 216px);
+  aspect-ratio: 1;
+}
+
+.intro-deco {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.intro.is-leaving .intro-deco {
+  opacity: 0;
+}
+
+.intro-glow {
+  position: absolute;
+  width: clamp(360px, 42vw, 600px);
+  height: clamp(200px, 24vw, 320px);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(222, 236, 246, 0.18),
+    rgba(222, 236, 246, 0.05) 52%,
+    transparent 74%
+  );
+  opacity: 0;
+  animation: introFadeIn 1.1s ease-out 1.72s both;
+}
+
+.intro-fly {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  transition: transform 1.06s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.intro-mark {
+  --mark-size: clamp(120px, 12.4vw, 178px);
+  display: inline-flex;
+  color: #e9f1f7;
+  opacity: 0;
+  animation: introMarkIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.76s both;
+}
+
+.intro-mark svg {
+  width: var(--mark-size);
+  height: var(--mark-size);
+  overflow: visible;
+  transform-origin: 50% 50%;
+  animation: introBreathe 0.8s ease-in-out 2.92s both;
+}
+
+.intro-mark svg path {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.intro-mark svg path:first-of-type {
+  animation: introBadgeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.76s both;
+}
+
+.intro-mark svg path:last-of-type {
+  animation: introInkIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.9s both;
+}
+
+.intro.is-leaving .intro-mark,
+.intro.is-leaving .intro-mark svg,
+.intro.is-leaving .intro-mark svg path {
+  animation: none;
+  opacity: 1;
+  filter: none;
+}
+
+.intro-word {
+  display: flex;
+  margin: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  transition:
+    transform 1.06s cubic-bezier(0.76, 0, 0.24, 1),
+    opacity 0.3s ease 0.58s;
+}
+
+.intro-word-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.09em 0.06em 0.13em;
+  margin: -0.09em -0.06em -0.13em;
+}
+
+.intro-word-inner {
+  display: block;
+  font-size: clamp(64px, 9.4vw, 138px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  padding-left: 0.05em;
+  background-image: linear-gradient(
+    100deg,
+    #93a6b8 0%,
+    #d7e4ee 32%,
+    #f8fcff 50%,
+    #dde9f2 66%,
+    #8fa3b6 100%
+  );
+  background-size: 210% 100%;
+  background-position: 115% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(112%);
+  will-change: transform, filter, opacity;
+  animation:
+    introWordIn 0.95s cubic-bezier(0.16, 1, 0.3, 1) 1.96s both,
+    introShine 1.2s cubic-bezier(0.35, 0, 0.2, 1) 2.6s both;
+}
+
+.intro.is-leaving .intro-word-mask {
+  overflow: visible;
+}
+
+.intro.is-leaving:not(.is-docking) .intro-word-inner {
+  animation: introWordOut 0.42s cubic-bezier(0.55, 0, 0.2, 1) both;
+}
+
+.intro.is-leaving.is-word-dock .intro-word {
+  opacity: 0;
+}
+
+.intro.is-leaving.is-docking:not(.is-word-dock) .intro-word {
+  visibility: hidden;
+}
+
+.intro.is-leaving.is-early .intro-copy {
+  animation: introCopyOut 0.3s ease both;
+}
+
+.intro-line {
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1 * clamp(26px, 3vw, 38px));
+  width: clamp(120px, 16vw, 200px);
+  height: 1px;
+  margin-left: calc(clamp(120px, 16vw, 200px) / -2);
+  background: linear-gradient(90deg, transparent, rgba(196, 226, 232, 0.5), transparent);
+  transform: scaleX(0);
+  opacity: 0;
+  animation: introLine 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2.78s both;
+  pointer-events: none;
+}
+
+.intro.is-leaving .intro-line {
+  animation: introLineOut 0.3s ease both;
+}
+
+/* ---------- sambungan ke halaman ---------- */
+
+.hero h1 .hl {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0 0.1em;
+  margin: -0.06em 0 -0.1em;
+}
+
+.hero h1 .hl > span {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.intro-run):not(.intro-done) .hero h1 .hl > span {
+    animation: heroLine 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.14s both;
+  }
+
+  html:not(.intro-run):not(.intro-done) .hero h1 .hl + .hl > span {
+    animation-delay: 0.24s;
+  }
+
+  html.intro-run .hero .reveal {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translate3d(0, 26px, 0);
+    transition: none;
+  }
+
+  html.intro-run .hero .hero-showcase.reveal {
+    filter: none;
+    transform: translate3d(0, 42px, 0) scale(0.99);
+  }
+
+  html.intro-run.intro-out .hero .reveal {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) calc(0.92s + var(--d, 0ms)),
+      transform 0.95s cubic-bezier(0.22, 0.61, 0.36, 1) calc(0.92s + var(--d, 0ms)),
+      filter 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) calc(0.92s + var(--d, 0ms));
+  }
+
+  html.intro-run.intro-out.intro-fast .hero .reveal {
+    transition-delay: 0s;
+    transition-duration: 0.5s;
+  }
+}
+
+/* ---------- gerak ---------- */
+
+@keyframes heroLine {
+  from {
+    transform: translate3d(0, 112%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes introDrift {
+  to {
+    transform: translate3d(2.4%, -2.2%, 0) scale(1.07);
+  }
+}
+
+@keyframes introLine {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes introLineOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes introWordOut {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-10px) scale(0.975);
+  }
+}
+
+@keyframes introCopyOut {
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-12px) scale(0.995);
+  }
+}
+
+@keyframes introRise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes introBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(0.28em);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes introMarkIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.72) translateY(12px);
+  }
+  62% {
+    opacity: 1;
+    transform: scale(1.035) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes introBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes introBadgeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.55) rotate(-16deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes introInkIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes introFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes introWordIn {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(112%);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes introShine {
+  from {
+    background-position: 115% 0;
+  }
+  to {
+    background-position: -25% 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .intro-copy {
+    padding: 0 20px;
+  }
+
+  .intro-kicker {
+    margin-bottom: 18px;
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    padding-left: 0.24em;
+  }
+
+  .intro-jp {
+    font-size: 10px;
+  }
+
+  .intro-hello {
+    font-size: clamp(38px, 10.6vw, 52px);
+  }
+
+  .intro-mark-stage {
+    width: 124px;
+  }
+
+  .intro-mark {
+    --mark-size: 104px;
+  }
+
+  .intro-word-inner {
+    font-size: clamp(54px, 15.5vw, 72px);
+  }
+
+  .intro-glow {
+    width: 300px;
+    height: 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}

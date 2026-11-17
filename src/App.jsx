@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import {
-  Decrypt,
   Magnet,
   Mark,
   Marquee,
   prefersReduced,
   Reveal,
-  Rotating,
   Spot,
   Tilt,
   Wave,
@@ -14,44 +12,44 @@ import {
 import { Icon } from './icons.jsx';
 import { PcMock, PhoneMock } from './mockups.jsx';
 import { DEMO_CHIPS, replyTo } from './demoBrain.js';
+import Intro from './Intro.jsx';
 import { SITE } from './site.js';
+import SplitText from './bits/SplitText.jsx';
+
+const CharacterStage = lazy(() => import('./CharacterStage.jsx'));
 
 const NAV = [
   ['#fitur', 'Fitur'],
+  ['#demo', 'Demo'],
   ['#cara-kerja', 'Cara kerja'],
   ['#di-hp', 'Di HP'],
   ['#karakter', 'Karakter'],
+  ['#coba', 'Coba 3D'],
   ['#tanya-jawab', 'Tanya jawab'],
 ];
 
-const TICKER = ['membuka aplikasi', 'memutar lagu', 'mengatur pengingat', 'mengingat obrolan'];
-
 const MARQUEE = [
-  'GROQ',
-  'WHISPER',
-  'SUARA',
-  'VRM 3D',
-  'RUST',
-  'WEBSOCKET',
-  'WINDOWS',
-  'ANDROID',
-  'INGATAN',
-  'JADWAL',
-  'PAIRING',
-  'LAN',
+  'Panggil namanya',
+  'Ia kerjakan',
+  'Ingat obrolan',
+  'Jepang + Indonesia',
+  'Di PC dan HP',
+  'Tanya dulu sebelum berisiko',
 ];
 
 const DEMO_START = [
   {
     id: 0,
     who: 'luna',
-    text: 'Halo, aku Luna. Coba ketik perintah seperti di aplikasi. Ini simulasi di browser, jadi tidak ada yang berjalan di PC-mu.',
+    text: 'こんにちは、私はLuna。WindowsのPCで暮らすパーソナルアシスタントだよ。下の例から試してみて。',
+    sub: 'Halo, aku Luna, asisten pribadi di PC Windows. Coba ketik perintah seperti di aplikasi. Ini simulasi di browser, jadi tidak ada yang berjalan di PC-mu.',
   },
   { id: -1, who: 'kamu', text: 'Luna, putar lagu lo-fi.' },
   {
     id: -2,
     who: 'luna',
-    text: 'Spotify terbuka. Playlist lo-fi diputar, volume 30%.',
+    text: 'Spotifyを開いたよ。lo-fiのプレイリストを音量30%で流してる。',
+    sub: 'Spotify terbuka. Playlist lo-fi diputar, volume 30%.',
     tag: 'musik diputar',
     kind: 'done',
   },
@@ -87,13 +85,79 @@ const CHARACTERS = [
   },
 ];
 
-const CAPABILITIES = [
-  ['Aplikasi & musik', 'buka Spotify, putar playlist, atur volume'],
-  ['File & dokumen', 'cari file, ringkas dokumen, buat catatan'],
-  ['Jadwal & pengingat', 'bangunin besok jam 7, ingatkan tiap Senin, tunda 10 menit'],
-  ['Layar & jendela', 'ambil screenshot, pindahkan jendela, matikan layar'],
-  ['Jaringan & sistem', 'cek jaringan, buka pengaturan router, kunci PC'],
-  ['HP sebagai remot', 'pasangkan lewat token, lihat layar PC, kirim perintah'],
+const SKILLS = [
+  {
+    icon: 'spark',
+    title: 'Aplikasi & musik',
+    text: 'Buka aplikasi yang terpasang, putar lagu, atur volume PC.',
+    cmd: 'open:spotify',
+  },
+  {
+    icon: 'window',
+    title: 'Kendali jendela',
+    text: 'Pindahkan fokus, kecilkan, besarkan, atau tutup jendela yang kamu sebut.',
+    cmd: 'window_focus:visual studio code',
+  },
+  {
+    icon: 'clipboard',
+    title: 'Clipboard',
+    text: 'Baca isi clipboard dan salin teks baru ke sana tanpa membuka aplikasi.',
+    cmd: 'clipboard_set:ringkasan rapat',
+  },
+  {
+    icon: 'folder',
+    title: 'File & folder',
+    text: 'Cari file di folder rumah, baca isinya, dan buat folder baru.',
+    cmd: 'file_search:proposal',
+  },
+  {
+    icon: 'cursor',
+    title: 'Klik elemen UI',
+    text: 'Temukan tombol atau menu lewat namanya, lalu klik lewat UI Automation.',
+    cmd: 'uia_click:Simpan',
+  },
+  {
+    icon: 'search',
+    title: 'Web & situs',
+    text: 'Cari di Google atau buka alamat situs langsung dari percakapan.',
+    cmd: 'web_search:jadwal KRL',
+  },
+  {
+    icon: 'deck',
+    title: 'Presentasi',
+    text: 'Susun kerangka, lalu bangun file PowerPoint asli dari topik yang kamu minta.',
+    cmd: 'ppt:riset pasar',
+  },
+  {
+    icon: 'screen',
+    title: 'Layar & input',
+    text: 'Ambil tangkapan layar, klik koordinat, ketik, dan tekan kombinasi tombol.',
+    cmd: 'screenshot',
+  },
+  {
+    icon: 'list',
+    title: 'Proses PC',
+    text: 'Lihat proses yang paling berat, lalu hentikan satu yang kamu pilih.',
+    cmd: 'process_list',
+  },
+  {
+    icon: 'calendar',
+    title: 'Jadwal & ingatan',
+    text: 'Pengingat harian atau mingguan, tunda sebentar, dan ingat obrolan lama.',
+    cmd: 'jadwal:senin 07.00',
+  },
+  {
+    icon: 'terminal',
+    title: 'Jaringan & sistem',
+    text: 'Cek jaringan, buka pengaturan router, kunci PC, atau atur suara.',
+    cmd: 'network',
+  },
+  {
+    icon: 'phone',
+    title: 'HP jadi remot',
+    text: 'Pasangkan lewat token, lihat layar PC, dan kirim perintah dari HP.',
+    cmd: 'pair:token',
+  },
 ];
 
 const PROVIDERS = [
@@ -108,7 +172,7 @@ const PROVIDERS = [
 const FAQS = [
   {
     q: 'Apakah Luna butuh internet?',
-    a: 'Untuk menyusun jawaban, ya. Teks perintah dikirim ke penyedia AI yang kamu pilih, bawaannya Groq. Audio diproses lokal dengan Whisper, suara Luna dibuat lokal dengan F5, dan kendali PC tetap berjalan di mesinmu.',
+    a: 'Untuk menyusun jawaban, ya. Teks perintah dikirim ke penyedia AI yang kamu pilih, bawaannya Groq. Mendengar dan bersuara berjalan di PC-mu, jadi audio tidak ikut keluar, dan kendali PC tetap di mesinmu.',
   },
   {
     q: 'Harus pakai Groq?',
@@ -143,9 +207,19 @@ const FAQS = [
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('');
+  const headerRef = useRef(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 18);
+    const sections = NAV.map(([href]) => document.querySelector(href)).filter(Boolean);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 18);
+      let current = '';
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= 140) current = `#${section.id}`;
+      }
+      setActive(current);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -156,19 +230,31 @@ function Nav() {
     const onKey = (event) => {
       if (event.key === 'Escape') setOpen(false);
     };
+    const onPointer = (event) => {
+      if (!headerRef.current?.contains(event.target)) setOpen(false);
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('pointerdown', onPointer);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('pointerdown', onPointer);
+    };
   }, [open]);
 
   return (
-    <header className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <a className="nav-brand" href="#atas" aria-label="Luna, kembali ke atas">
-        <Mark size={28} bare />
+    <header className={`nav ${scrolled ? 'scrolled' : ''}`} ref={headerRef}>
+      <a className="nav-brand" href="#atas" aria-label="Luna, kembali ke atas" data-nav-mark>
+        <Mark size={30} />
         <span>Luna</span>
       </a>
       <nav className="nav-links" aria-label="Navigasi utama">
         {NAV.map(([href, label]) => (
-          <a key={href} href={href}>
+          <a
+            key={href}
+            href={href}
+            aria-current={active === href ? 'location' : undefined}
+            onClick={() => setActive(href)}
+          >
             {label}
           </a>
         ))}
@@ -188,7 +274,14 @@ function Nav() {
       </button>
       <div id="nav-menu" className={`nav-menu ${open ? 'open' : ''}`}>
         {NAV.map(([href, label]) => (
-          <a key={href} href={href} onClick={() => setOpen(false)}>
+          <a
+            key={href}
+            href={href}
+            onClick={() => {
+              setActive(href);
+              setOpen(false);
+            }}
+          >
             {label}
           </a>
         ))}
@@ -270,10 +363,7 @@ function HeroShowcase() {
                 Luna
                 <em>ruang kerja</em>
               </span>
-              <span className="appwin-state">
-                <i />
-                siap mendengar
-              </span>
+              <span className="appwin-state">siap mendengar</span>
             </div>
 
             <div className="appwin-body">
@@ -318,10 +408,7 @@ function HeroShowcase() {
                 />
                 <span className="stage-shade" />
                 <div className="stage-top">
-                  <span className="stage-live">
-                    <i />
-                    live
-                  </span>
+                  <span className="stage-live">suara aktif</span>
                   <span className="stage-mode">mode santai</span>
                 </div>
                 <div className="stage-note">
@@ -332,7 +419,10 @@ function HeroShowcase() {
                   <span className="mini-bubble me">Luna, putar lagu lo-fi.</span>
                   <span className="mini-bubble luna">
                     <Mark size={10} />
-                    Spotify terbuka. Diputar pelan.
+                    <span className="mini-copy">
+                      Spotifyを開いたよ。静かに流してる。
+                      <small>Spotify terbuka. Diputar pelan.</small>
+                    </span>
                   </span>
                 </div>
                 <div className="stage-foot">
@@ -349,18 +439,18 @@ function HeroShowcase() {
 
               <div className="appwin-chat">
                 <div className="chat-head">
-                  <span className="chat-live">
-                    <i />
-                    <Rotating items={TICKER} />
-                  </span>
-                  <small>obrolan · 21.07</small>
+                  <span className="chat-live">obrolan Luna</span>
+                  <small>21.07</small>
                 </div>
                 <div className="chat-scroll">
                   <div className="chat-row luna">
                     <span className="chat-avatar">
                       <Mark size={14} />
                     </span>
-                    <p>Malam. Aku di sini. Mau mulai dari mana?</p>
+                    <p>
+                      夜だね、Ariel。ここにいるよ。どこから始める？
+                      <small className="chat-sub">Malam. Aku di sini. Mau mulai dari mana?</small>
+                    </p>
                   </div>
                   <div className="chat-row me">
                     <p>Luna, putar lagu lo-fi.</p>
@@ -369,7 +459,10 @@ function HeroShowcase() {
                     <span className="chat-avatar">
                       <Mark size={14} />
                     </span>
-                    <p>Spotify terbuka. Playlist lo-fi diputar, volume 30%.</p>
+                    <p>
+                      Spotifyを開いたよ。lo-fiのプレイリストを音量30%で流してる。
+                      <small className="chat-sub">Spotify terbuka. Playlist lo-fi diputar, volume 30%.</small>
+                    </p>
                   </div>
                   <div className="chat-action">
                     <span className="chat-action-icon">
@@ -385,14 +478,7 @@ function HeroShowcase() {
                     <span>“Bangunin aku jam 7”</span>
                     <span>“Cari file proposal”</span>
                   </div>
-                  <div className="chat-typing">
-                    <span className="typing-dots">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                    <span>Luna siap kapan saja</span>
-                  </div>
+                  <div className="chat-typing">Luna siap kapan saja</div>
                 </div>
                 <div className="chat-input">
                   <span>Ketik atau ucapkan…</span>
@@ -411,16 +497,18 @@ function HeroShowcase() {
 
 function Hero() {
   return (
-    <section className="hero" id="atas">
+    <section className="hero" id="atas" data-rest>
       <div className="wrap hero-center">
         <Reveal as="p" className="hero-badge">
-          <span className="status-dot" />
-          <Decrypt text="LUNA · ASISTEN SUARA PRIBADI" />
+          <span>Luna — asisten suara pribadi</span>
         </Reveal>
         <Reveal as="h1" delay={50}>
-          Bilang saja.
-          <br />
-          <span className="dim">Luna yang urus.</span>
+          <span className="hl">
+            <span>Bilang saja.</span>
+          </span>
+          <span className="hl">
+            <span className="dim">Luna yang urus.</span>
+          </span>
         </Reveal>
         <Reveal as="p" className="hero-lead" delay={110}>
           Luna tinggal di komputermu dan bekerja lewat suara. Panggil namanya saat tanganmu masih
@@ -441,14 +529,14 @@ function Hero() {
         </Reveal>
         <Reveal as="p" className="hero-meta" delay={210}>
           <span>Windows 10/11</span>
-          <i />
           <span>Android 5.1+</span>
-          <i />
           <span>Mulai dari PC</span>
         </Reveal>
       </div>
 
-      <HeroShowcase />
+      <div className="hero-scrub">
+        <HeroShowcase />
+      </div>
     </section>
   );
 }
@@ -466,8 +554,6 @@ function OrbDemo() {
       <i className="orb-ring r1" />
       <i className="orb-ring r2" />
       <span className="orb-core" />
-      <i className="orb-dot d1" />
-      <i className="orb-dot d2" />
       <span className="orb-hint">{listening ? 'mendengarkan…' : 'ketuk untuk contoh'}</span>
     </button>
   );
@@ -509,7 +595,12 @@ function Features() {
                     <span>luna</span>
                     <Wave bars={24} active />
                   </div>
-                  <p className="voice-foot">otak AI pilihanmu · suara Luna</p>
+                  <div className="voice-langs">
+                    <span data-on="true">Jepang · imut</span>
+                    <span>Indonesia</span>
+                    <span>Inggris</span>
+                  </div>
+                  <p className="voice-foot">Suara Jepang · bisa diganti</p>
                 </div>
               </div>
             </Spot>
@@ -523,7 +614,7 @@ function Features() {
               <h3>Wajah yang ikut bicara</h3>
               <p>
                 Avatarnya berkedip dan bibirnya bergerak mengikuti irama suara. Kalau bosan, kamu
-                bisa mengganti model VRM lain dari menu stage.
+                bisa mengganti model VRM lain dari Pengaturan.
               </p>
               <OrbDemo />
               <p className="card-note">VRM · ekspresi · lip-sync</p>
@@ -609,7 +700,7 @@ function Features() {
                   <small>pairing · LAN</small>
                 </span>
                 <span className="pair-state">
-                  <i />
+                  <Icon name="check" size={12} />
                   terhubung
                 </span>
               </div>
@@ -620,22 +711,51 @@ function Features() {
 
         <div className="capability">
           <Reveal className="capability-intro">
-            <p className="eyebrow">Daftar singkat</p>
-            <h3>Yang bisa kamu minta.</h3>
+            <p className="eyebrow">Kemampuan</p>
+            <h3>Bukan cuma menjawab. <span>Dia kerjakan.</span></h3>
             <p>
-              Luna paling berguna saat tanganmu sibuk. Perintah di bawah sudah dipetakan ke
-              tindakan di Windows, bukan cuma dijawab dengan teks.
+              Perintah harian dipetakan ke aksi Windows yang nyata: membuka aplikasi, mengatur
+              jendela, menyentuh clipboard, mencari file, sampai membangun presentasi. Semuanya
+              dari satu percakapan.
             </p>
+            <ol className="skill-loop" aria-label="Alur kerja Luna">
+              <li>
+                <span>01</span>
+                <b>Dengar</b>
+                <small>panggil namanya</small>
+              </li>
+              <li>
+                <span>02</span>
+                <b>Pahami</b>
+                <small>niat dan konteks</small>
+              </li>
+              <li>
+                <span>03</span>
+                <b>Kerjakan</b>
+                <small>aksi di Windows</small>
+              </li>
+              <li>
+                <span>04</span>
+                <b>Periksa</b>
+                <small>izin sebelum risiko</small>
+              </li>
+            </ol>
             <p className="capability-limit">
               <Icon name="lock" size={13} />
               Tindakan yang mengubah PC tetap minta konfirmasi.
             </p>
           </Reveal>
           <div className="capability-grid">
-            {CAPABILITIES.map(([title, items], index) => (
-              <Reveal className="capability-item" key={title} delay={index * 40}>
-                <b>{title}</b>
-                <p>{items}</p>
+            {SKILLS.map((skill, index) => (
+              <Reveal className="capability-item" key={skill.title} delay={index * 30}>
+                <span className="cap-icon">
+                  <Icon name={skill.icon} size={16} />
+                </span>
+                <div className="cap-copy">
+                  <b>{skill.title}</b>
+                  <p>{skill.text}</p>
+                  <code>{skill.cmd}</code>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -645,12 +765,57 @@ function Features() {
   );
 }
 
-function DemoChat() {
+function DemoStage() {
+  return (
+    <section className="section demo-sec" id="demo" data-rest>
+      <div className="wrap demo-grid">
+        <div>
+          <Head
+            num="02"
+            eyebrow="Demo langsung"
+            title={
+              <>
+                Coba dulu di browser.
+                <br />
+                Tanpa memasang apa pun.
+              </>
+            }
+            lead="Tulis perintah seperti di aplikasi, atau ketuk contohnya. Jawabannya keluar dalam bahasa Jepang dengan terjemahan Indonesia di bawahnya, persis seperti transkrip di Luna."
+          />
+          <ul className="demo-points">
+            <li>
+              <b>Dua bahasa dalam satu balasan.</b>
+              <span>Suara Jepang default, teks aslinya di atas dan subtitle Indonesia di bawah.</span>
+            </li>
+            <li>
+              <b>Perintah berubah jadi tindakan.</b>
+              <span>Buka aplikasi, putar lagu, pasang pengingat, cari file — bukan cuma balas teks.</span>
+            </li>
+            <li>
+              <b>Yang berisiko minta izin dulu.</b>
+              <span>Matikan PC atau restart tidak jalan sebelum kamu konfirmasi.</span>
+            </li>
+          </ul>
+          <p className="demo-limit">
+            <Icon name="lock" size={13} />
+            Ini simulasi di browser. Tidak ada perintah yang dijalankan di PC-mu.
+          </p>
+        </div>
+        <Reveal className="demo-stage" delay={80}>
+          <DemoChat auto />
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function DemoChat({ auto = false }) {
   const [messages, setMessages] = useState(DEMO_START);
   const [draft, setDraft] = useState('');
   const [busy, setBusy] = useState(false);
   const timers = useRef([]);
   const bodyRef = useRef(null);
+  const rootRef = useRef(null);
   const nextId = useRef(1);
 
   const clearTimers = () => {
@@ -694,6 +859,32 @@ function DemoChat() {
     );
   };
 
+  useEffect(() => {
+    if (!auto) return undefined;
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    try {
+      if (sessionStorage.getItem('luna-demo-played') === '1') return undefined;
+    } catch {
+      /* storage diblokir: biarkan demo jalan sekali per muat */
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        io.disconnect();
+        try {
+          sessionStorage.setItem('luna-demo-played', '1');
+        } catch {
+          /* abaikan */
+        }
+        window.setTimeout(() => send('Besok jam 7 bangunin aku.'), 900);
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [auto]);
+
   const reset = () => {
     clearTimers();
     setMessages(DEMO_START);
@@ -703,11 +894,11 @@ function DemoChat() {
   };
 
   return (
-    <div className="demo">
+    <div className="demo" ref={rootRef}>
       <div className="demo-head">
         <Mark size={26} bare />
         <b>Luna</b>
-        <small>demo interaktif</small>
+        <small>demo · Jepang + sub Indonesia</small>
         <Wave bars={10} active={busy} className="demo-wave" />
         <button
           type="button"
@@ -723,13 +914,12 @@ function DemoChat() {
         {messages.map((message) =>
           message.typing ? (
             <div className="dmsg luna typing" key="typing">
-              <i />
-              <i />
-              <i />
+              <span>menyiapkan…</span>
             </div>
           ) : (
             <div className={`dmsg ${message.who}`} key={message.id}>
               <span>{message.text}</span>
+              {message.sub ? <span className="dmsg-sub">{message.sub}</span> : null}
               {message.tag ? (
                 <span className={`act ${message.kind || 'done'}`}>
                   <Icon name={ACT_ICON[message.kind] || 'check'} size={11} />
@@ -796,7 +986,7 @@ function Work() {
       <div className="wrap work">
         <div>
           <Head
-            num="02"
+            num="03"
             eyebrow="Cara kerja"
             title={
               <>
@@ -831,9 +1021,6 @@ function Work() {
             </Reveal>
           </div>
         </div>
-        <Reveal delay={120}>
-          <DemoChat />
-        </Reveal>
       </div>
 
       <div className="wrap privacy">
@@ -851,7 +1038,7 @@ function Work() {
               <Icon name="lock" size={16} />
             </span>
             <b>Di PC-mu</b>
-            <p>Whisper dan F5 berjalan lokal. Ingatan, jadwal, dan kendali PC tersimpan di mesinmu.</p>
+            <p>Mendengar dan bersuara berjalan di PC-mu. Ingatan, jadwal, dan kendali PC juga tersimpan di mesinmu.</p>
           </Reveal>
           <Reveal className="privacy-item" delay={80}>
             <span className="privacy-icon">
@@ -898,14 +1085,6 @@ function Work() {
           </ul>
           <dl className="brain-fields">
             <div>
-              <dt>Alamat API</dt>
-              <dd>https://api.groq.com/openai/v1</dd>
-            </div>
-            <div>
-              <dt>Model</dt>
-              <dd>llama-3.3-70b-versatile</dd>
-            </div>
-            <div>
               <dt>Kunci</dt>
               <dd>tersimpan di PC-mu saja</dd>
             </div>
@@ -922,7 +1101,7 @@ function Showcase() {
       <div className="wrap show-grid">
         <div>
           <Head
-            num="03"
+            num="04"
             eyebrow="Dua layar, satu Luna"
             title={
               <>
@@ -1003,7 +1182,7 @@ function Characters() {
     <section className="section light char-sec" id="karakter">
       <div className="wrap">
         <Head
-          num="04"
+          num="05"
           eyebrow="Karakter"
           title={
             <>
@@ -1012,7 +1191,7 @@ function Characters() {
               banyak wajah.
             </>
           }
-          lead="Luna bisa tampil dengan beberapa model. Pilih satu untuk melihat contoh percakapannya, lalu ganti kapan saja dari menu stage. Wajahnya berganti, asistennya tetap Luna."
+          lead="Luna bisa tampil dengan beberapa model. Pilih satu untuk melihat contoh percakapannya, lalu ganti kapan saja dari Pengaturan. Wajahnya berganti, asistennya tetap Luna."
         />
 
         <div className="char-grid">
@@ -1039,7 +1218,7 @@ function Characters() {
                 </span>
               </button>
             ))}
-            <p className="char-tip">Ini pratinjau gambar, bukan model 3D yang bisa diputar. Kredit ada di tiap kartu; berkas VRM tidak dibagikan lewat situs. Di aplikasi, kamu bisa memuat VRM milikmu sendiri.</p>
+            <p className="char-tip">Pratinjau gambar. Di aplikasi, kamu bisa memakai model 3D milikmu sendiri.</p>
           </div>
 
           <div
@@ -1063,10 +1242,7 @@ function Characters() {
                   <b>{current.name}</b>
                   <small>{current.vibe}</small>
                 </div>
-                <span className="char-live">
-                  <i aria-hidden="true" />
-                  pratinjau
-                </span>
+                <span className="char-live">pratinjau</span>
               </div>
             </div>
 
@@ -1084,10 +1260,143 @@ function Characters() {
                 <a href={current.creditUrl} target="_blank" rel="noreferrer">
                   {current.credit}
                 </a>
-                <span> · lisensi model</span>
               </p>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const MOODS = [
+  { id: 'neutral', label: 'Netral' },
+  { id: 'happy', label: 'Senang' },
+  { id: 'sad', label: 'Sedih' },
+  { id: 'angry', label: 'Marah' },
+  { id: 'relaxed', label: 'Santai' },
+];
+
+function CharacterDemo() {
+  const [mood, setMood] = useState('neutral');
+  const [talking, setTalking] = useState(false);
+  const [armed, setArmed] = useState(false);
+  const stageRef = useRef(null);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el || !('IntersectionObserver' in window)) {
+      setArmed(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setArmed(true);
+        io.disconnect();
+      },
+      { rootMargin: '500px 0px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section className="section night vd-sec" id="coba">
+      <div className="wrap">
+        <div className="sec-head vd-head">
+          <Reveal as="p" className="eyebrow">
+            <span className="eyebrow-num">05</span>
+            Coba sendiri
+          </Reveal>
+          <SplitText
+            tag="h2"
+            className="vd-title"
+            text="Bukan gambar. Silakan putar."
+            splitType="chars"
+            delay={22}
+            duration={1.1}
+            effect="rise"
+            threshold={0.25}
+            rootMargin="-40px"
+            textAlign="left"
+          />
+          <Reveal as="p" className="lead" delay={120}>
+            Karakter 3D asli, dirender langsung di browsermu. Geser untuk memutar, pilih raut
+            wajahnya, lalu nyalakan mode bicara untuk melihat gerak mulut.
+          </Reveal>
+        </div>
+
+        <div className="vd-show">
+          <div className="vd-stage" ref={stageRef}>
+            {armed ? (
+              <Suspense
+                fallback={
+                  <div className="vd-cover">
+                    <span className="vd-spinner" aria-hidden="true" />
+                    <p>Menyiapkan pemutar 3D…</p>
+                  </div>
+                }
+              >
+                <CharacterStage mood={mood} talking={talking} />
+              </Suspense>
+            ) : (
+              <div className="vd-cover">
+                <span className="vd-ring" aria-hidden="true" />
+                <p>Karakter 3D dimuat saat bagian ini terlihat.</p>
+              </div>
+            )}
+          </div>
+
+          <aside className="vd-panel" aria-label="Kontrol demo karakter">
+            <div>
+              <p className="vd-label">Ekspresi</p>
+              <div className="vd-chips" role="group" aria-label="Pilih ekspresi karakter">
+                {MOODS.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`chip ${mood === item.id ? 'on' : ''}`}
+                    aria-pressed={mood === item.id}
+                    onClick={() => setMood(item.id)}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="button"
+                className={`vd-talk ${talking ? 'on' : ''}`}
+                aria-pressed={talking}
+                onClick={() => setTalking((value) => !value)}
+              >
+                {talking ? 'Mode bicara aktif' : 'Nyalakan mode bicara'}
+              </button>
+              <p className="vd-note">
+                Mulut mengikuti irama suku kata tiruan. Di aplikasi, geraknya mengikuti suara Luna
+                yang sedang berbicara.
+              </p>
+            </div>
+
+            <p className="vd-credit">
+              Model 3D <b>Twist Sample</b> oleh{' '}
+              <a
+                href="https://github.com/vrm-c/vrm-specification/tree/master/samples/VRM1_Constraint_Twist_Sample"
+                target="_blank"
+                rel="noreferrer"
+              >
+                pixiv Inc.
+              </a>
+              {' · '}gerakan idle oleh{' '}
+              <a href={`${import.meta.env.BASE_URL}animations/NOTICE.md`} target="_blank" rel="noreferrer">
+                Overte
+              </a>
+              . Lisensi VRM Public License 1.0 dan Apache-2.0.
+            </p>
+          </aside>
         </div>
       </div>
     </section>
@@ -1102,7 +1411,7 @@ function Faq() {
       <div className="wrap faq">
         <div className="faq-head">
           <Head
-            num="05"
+            num="06"
             eyebrow="Tanya jawab"
             title={
               <>
@@ -1153,7 +1462,7 @@ function Faq() {
 
 function Cta() {
   return (
-    <section className="cta" id="unduh">
+    <section className="cta" id="unduh" data-rest>
       <div className="wrap">
         <Reveal className="cta-mark">
           <span className="cta-glow" aria-hidden="true" />
@@ -1281,8 +1590,24 @@ function Footer() {
 }
 
 export default function App() {
+  useEffect(() => {
+    const targets = document.querySelectorAll('[data-rest]');
+    if (!targets.length || !('IntersectionObserver' in window)) return undefined;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          entry.target.classList.toggle('is-resting', !entry.isIntersecting);
+        }
+      },
+      { rootMargin: '180px 0px' },
+    );
+    targets.forEach((target) => io.observe(target));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
+      <Intro />
       <a className="skip" href="#fitur">
         Langsung ke fitur
       </a>
@@ -1291,9 +1616,11 @@ export default function App() {
         <Hero />
         <Marquee items={MARQUEE} />
         <Features />
+        <DemoStage />
         <Work />
         <Showcase />
         <Characters />
+        <CharacterDemo />
         <Faq />
         <Cta />
       </main>
