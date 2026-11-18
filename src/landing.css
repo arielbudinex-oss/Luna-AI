@@ -1393,6 +1393,228 @@ h2 {
   text-wrap: pretty;
 }
 
+.work-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(232, 237, 242, 0.12);
+  border-radius: 22px;
+  background: linear-gradient(180deg, #121820 0%, #0d1219 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+}
+
+.work-stage::before {
+  content: '';
+  position: absolute;
+  inset: -40% 20% auto;
+  height: 60%;
+  background: radial-gradient(closest-side, rgba(216, 228, 239, 0.1), transparent);
+  pointer-events: none;
+}
+
+.ws-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.ws-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-dark-faint);
+}
+
+.ws-live i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-lift);
+  box-shadow: 0 0 0 3px rgba(216, 228, 239, 0.14);
+}
+
+.ws-time {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--on-dark-faint);
+}
+
+.ws-body {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.ws-me {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(232, 237, 242, 0.14);
+  border-radius: 14px;
+  background: rgba(232, 237, 242, 0.05);
+}
+
+.ws-who {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-dark-faint);
+}
+
+.ws-me p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--on-dark-soft);
+}
+
+.ws-me .wave {
+  height: 14px;
+}
+
+.ws-log {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0 2px;
+  list-style: none;
+}
+
+.ws-log li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--on-dark-faint);
+}
+
+.ws-log li::before {
+  content: '';
+  width: 12px;
+  height: 1px;
+  background: rgba(216, 228, 239, 0.4);
+}
+
+.ws-file {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  border: 1px solid rgba(232, 237, 242, 0.14);
+  border-radius: 13px;
+  background: rgba(232, 237, 242, 0.04);
+}
+
+.ws-file-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  border: 1px solid rgba(232, 237, 242, 0.16);
+  color: var(--accent-lift);
+}
+
+.ws-file-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ws-file-copy b {
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ws-file-copy small {
+  font-size: 10px;
+  color: var(--on-dark-faint);
+}
+
+.ws-file-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-lift);
+}
+
+.ws-confirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 1px dashed rgba(232, 237, 242, 0.24);
+  border-radius: 13px;
+}
+
+.ws-confirm-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.ws-confirm-copy b {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.ws-confirm-copy small {
+  font-size: 10.5px;
+  color: var(--on-dark-faint);
+}
+
+.ws-confirm-actions {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.ws-confirm-actions i {
+  padding: 5px 10px;
+  border: 1px solid rgba(232, 237, 242, 0.22);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-dark-faint);
+}
+
+.ws-confirm-actions i.on {
+  border-color: rgba(232, 237, 242, 0.55);
+  color: #0c1117;
+  background: var(--accent-lift);
+}
+
+.ws-foot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 18px 14px;
+  border-top: 1px solid var(--line-dark);
+  font-size: 11px;
+  color: var(--on-dark-faint);
+}
+
 /* ---------- demo ---------- */
 
 .demo {

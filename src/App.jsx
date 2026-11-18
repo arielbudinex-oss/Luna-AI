@@ -1006,6 +1006,55 @@ function Work() {
             </Reveal>
           </div>
         </div>
+
+        <Reveal className="work-stage" delay={140}>
+          <div className="ws-top">
+            <span className="ws-live">
+              <i />
+              sesi luna
+            </span>
+            <span className="ws-time">21.07</span>
+          </div>
+          <div className="ws-body" aria-hidden="true">
+            <div className="ws-me">
+              <span className="ws-who">kamu</span>
+              <p>“Luna, siapkan presentasi ekonomi sirkular.”</p>
+              <Wave bars={10} />
+            </div>
+            <ol className="ws-log">
+              <li>topik dibaca</li>
+              <li>7 slide disusun</li>
+              <li>grafik ditambahkan</li>
+            </ol>
+            <div className="ws-file">
+              <span className="ws-file-icon">
+                <Icon name="deck" size={15} />
+              </span>
+              <span className="ws-file-copy">
+                <b>ekonomi-sirkular.pptx</b>
+                <small>Dokumen · 2,4 MB</small>
+              </span>
+              <span className="ws-file-state">
+                <Icon name="check" size={11} />
+                siap
+              </span>
+            </div>
+            <div className="ws-confirm">
+              <span className="ws-confirm-copy">
+                <b>Matikan PC</b>
+                <small>menunggu jawabanmu</small>
+              </span>
+              <span className="ws-confirm-actions">
+                <i className="on">Ya</i>
+                <i>Tidak</i>
+              </span>
+            </div>
+          </div>
+          <p className="ws-foot">
+            <Icon name="lock" size={12} />
+            Tindakan berisiko berhenti di konfirmasi.
+          </p>
+        </Reveal>
       </div>
 
       <div className="wrap privacy">
@@ -1293,7 +1342,7 @@ function CharacterDemo() {
       <div className="wrap">
         <div className="sec-head vd-head">
           <Reveal as="p" className="eyebrow">
-            <span className="eyebrow-num">05</span>
+            <span className="eyebrow-num">06</span>
             Coba sendiri
           </Reveal>
           <SplitText
@@ -1394,7 +1443,7 @@ function Faq() {
       <div className="wrap faq">
         <div className="faq-head">
           <Head
-            num="06"
+            num="07"
             eyebrow="Tanya jawab"
             title={
               <>
